@@ -2,4 +2,37 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Berlin Concert Aggregator//NONSGML v1.0//EN
 X-WR-CALNAME:Berlin Concerts Combined
+BEGIN:VEVENT
+SUMMARY:EZRA COLLECTIVE
+DTSTART;VALUE=DATE:20261112
+DESCRIPTION:Veranstalter: Greyzone Concerts | Info: https://www.greyzone-c
+ oncerts.de
+LOCATION:Astra Kulturhaus\, Berlin
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Mother’s Cake - EuroTour 2026
+DTSTART;VALUE=DATE:20261115
+DESCRIPTION:Veranstalter: Sound of Liberation | Info: https://soundofliber
+ ation.com
+LOCATION:Berlin
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:BARONESS
+DTSTART;VALUE=DATE:20261120
+DESCRIPTION:Veranstalter: Trinity Music | Info: https://trinitymusic.de
+LOCATION:Metropol\, Berlin
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Duster
+DTSTART;VALUE=DATE:20261124
+DESCRIPTION:Veranstalter: Puschen | Info: https://puschen.net/berlin/
+LOCATION:Astra Kulturhaus\, Berlin
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:HIGH ON FIRE
+DTSTART;VALUE=DATE:20261211
+DESCRIPTION:Veranstalter: Greyzone Concerts | Info: https://www.greyzone-c
+ oncerts.de
+LOCATION:SO36\, Berlin
+END:VEVENT
 END:VCALENDAR
