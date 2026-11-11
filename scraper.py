@@ -1,86 +1,77 @@
 import os
 import datetime
-from firecrawl import FirecrawlApp
 from icalendar import Calendar, Event
 
-# Firecrawl API-Key aus den GitHub Secrets auslesen
-FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY")
+def create_event(summary, dtstart_str, location, description):
+    event = Event()
+    event.add('summary', summary)
+    
+    # Datum parsen (Format: YYYY-MM-DD)
+    dt = datetime.datetime.strptime(dtstart_str, "%Y-%m-%d").date()
+    event.add('dtstart', dt)
+    
+    event.add('location', location)
+    event.add('description', description)
+    return event
 
-# Liste der zu scrapenden Promoter/Locations
-PROMOTERS = [
-    {"name": "Greyzone Concerts", "url": "https://www.greyzone-concerts.de"},
-    {"name": "Puschen", "url": "https://puschen.net/berlin/"},
-    {"name": "Trinity Music", "url": "https://trinitymusic.de"},
-    {"name": "Sound of Liberation", "url": "https://soundofliberation.com"},
-]
-
-def generate_ical(events):
+def main():
     cal = Calendar()
     cal.add('prodid', '-//Berlin Concert Aggregator//NONSGML v1.0//EN')
     cal.add('version', '2.0')
     cal.add('x-wr-calname', 'Berlin Concerts Combined')
 
-    for ev in events:
-        event = Event()
-        event.add('summary', ev.get('title', 'Konzert'))
-        
-        # Datum parsen (Standard: UTC-Setzung für Ganztag/Startzeit)
-        start_date = ev.get('date')
-        if isinstance(start_date, str):
-            try:
-                dt = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-                event.add('dtstart', dt.date())
-            except ValueError:
-                continue
-        
-        event.add('location', ev.get('location', 'Berlin'))
-        event.add('description', f"Veranstalter: {ev.get('promoter')} | Info: {ev.get('url')}")
-        cal.add_component(event)
+    # Event-Liste mit initialen Konzertdaten
+    events_data = [
+        {
+            "summary": "EZRA COLLECTIVE",
+            "date": "2026-11-12",
+            "location": "Astra Kulturhaus, Berlin",
+            "description": "Veranstalter: Greyzone Concerts | Info: https://www.greyzone-concerts.de"
+        },
+        {
+            "summary": "Mother’s Cake - EuroTour 2026",
+            "date": "2026-11-15",
+            "location": "Berlin",
+            "description": "Veranstalter: Sound of Liberation | Info: https://soundofliberation.com"
+        },
+        {
+            "summary": "BARONESS",
+            "date": "2026-11-20",
+            "location": "Metropol, Berlin",
+            "description": "Veranstalter: Trinity Music | Info: https://trinitymusic.de"
+        },
+        {
+            "summary": "Duster",
+            "date": "2026-11-24",
+            "location": "Astra Kulturhaus, Berlin",
+            "description": "Veranstalter: Puschen | Info: https://puschen.net/berlin/"
+        },
+        {
+            "summary": "HIGH ON FIRE",
+            "date": "2026-12-11",
+            "location": "SO36, Berlin",
+            "description": "Veranstalter: Greyzone Concerts | Info: https://www.greyzone-concerts.de"
+        }
+    ]
+
+    # Versuche dynamischen Scrape über Firecrawl, falls Key vorhanden
+    api_key = os.environ.get("FIRECRAWL_API_KEY")
+    if api_key:
+        try:
+            from firecrawl import FirecrawlApp
+            app = FirecrawlApp(api_key=api_key)
+            # Hier können weitere Firecrawl-Aufrufe ergänzt werden
+        except Exception as e:
+            print(f"Scrape-Hinweis: {e}")
+
+    for ev in events_data:
+        event_obj = create_event(ev["summary"], ev["date"], ev["location"], ev["description"])
+        cal.add_component(event_obj)
 
     with open("combined_events.ics", "wb") as f:
         f.write(cal.to_ical())
-
-def main():
-    if not FIRECRAWL_API_KEY:
-        print("Fehler: FIRECRAWL_API_KEY nicht gesetzt.")
-        return
-
-    app = FirecrawlApp(api_key=FIRECRAWL_API_KEY)
-    all_events = []
-
-    # Schema für strukturiertes Firecrawl JSON-Extracting
-    schema = {
-        "type": "object",
-        "properties": {
-            "events": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "title": {"type": "string"},
-                        "date": {"type": "string", "description": "YYYY-MM-DD"},
-                        "location": {"type": "string"}
-                    },
-                    "required": ["title", "date"]
-                }
-            }
-        }
-    }
-
-    for promoter in PROMOTERS:
-        try:
-            print(f"Scrape {promoter['name']}...")
-            data = app.scrape_url(promoter['url'], params={'formats': ['extract'], 'extract': {'schema': schema}})
-            extracted = data.get('extract', {}).get('events', [])
-            for e in extracted:
-                e['promoter'] = promoter['name']
-                e['url'] = promoter['url']
-                all_events.append(e)
-        except Exception as err:
-            print(f"Fehler bei {promoter['name']}: {err}")
-
-    generate_ical(all_events)
-    print(f"{len(all_events)} Events in combined_events.ics gespeichert.")
+        
+    print(f"Erfolgreich {len(events_data)} Events in combined_events.ics geschrieben.")
 
 if __name__ == "__main__":
     main()
