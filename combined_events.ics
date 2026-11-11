@@ -10,29 +10,10 @@ DESCRIPTION:Veranstalter: Greyzone Concerts | Info: https://www.greyzone-c
 LOCATION:Astra Kulturhaus\, Berlin
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Mother’s Cake - EuroTour 2026
-DTSTART;VALUE=DATE:20261115
-DESCRIPTION:Veranstalter: Sound of Liberation | Info: https://soundofliber
- ation.com
-LOCATION:Berlin
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:BARONESS
-DTSTART;VALUE=DATE:20261120
-DESCRIPTION:Veranstalter: Trinity Music | Info: https://trinitymusic.de
-LOCATION:Metropol\, Berlin
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Duster
-DTSTART;VALUE=DATE:20261124
-DESCRIPTION:Veranstalter: Puschen | Info: https://puschen.net/berlin/
-LOCATION:Astra Kulturhaus\, Berlin
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:HIGH ON FIRE
-DTSTART;VALUE=DATE:20261211
-DESCRIPTION:Veranstalter: Greyzone Concerts | Info: https://www.greyzone-c
- oncerts.de
-LOCATION:SO36\, Berlin
+SUMMARY:Live im Neue Zukunft
+DTSTART;VALUE=DATE:20261118
+DESCRIPTION:Veranstalter: Neue Zukunft | Info: https://neue-zukunft.org/ko
+ nzerte.html
+LOCATION:Neue Zukunft\, Berlin
 END:VEVENT
 END:VCALENDAR
